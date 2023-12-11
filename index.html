@@ -1,8 +1,62 @@
+<!DOCTYPE html>
 <html>
 <head>
-  <title> PONGIMAJI </title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
 </head>
 <body>
-<h1> Alif Ganteng </h1>
+	<table id="table-siswa" border="1px">
+		<thead>
+			<tr>
+				<th>NO</th>
+				<th>NAMA</th>
+				<th>ALAMAT</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
 </body>
+<script src="jquery-3.7.1.min.js"></script>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyDArA7VaEjHZnIYPy3ZJbjLNymzBLjSEEI",
+    authDomain: "nth-transformer-402704.firebaseapp.com",
+    databaseURL: "https://nth-transformer-402704-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "nth-transformer-402704",
+    storageBucket: "nth-transformer-402704.appspot.com",
+    messagingSenderId: "678852750597",
+    appId: "1:678852750597:web:4e17c82f6fad8c2d889b6c",
+    measurementId: "G-TJZWH2W7CM"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  async function getSiswa() {
+	  const colls = collection(db, 'siswa');
+
+	  try {
+	    const snapshot = await getDocs(colls);
+	    const data = snapshot.docs.map(doc => doc.data());
+	    var no=0;
+	    $('#table-siswa tbody').html('')
+	    $.each(data, function(index, value){
+	    	no++;
+	    	$('#table-siswa tbody').append('<tr><td>'+no+'</td><td>'+value['nama']+'</td><td>'+value['alamat']+'</td></tr>');
+	    })
+	  } catch (error) {
+	    console.error("Error getting documents: ", error);
+	  }
+	}
+
+	$(document).ready(function(){
+		getSiswa();
+	})
+</script>
+
 </html>
